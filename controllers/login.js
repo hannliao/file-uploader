@@ -31,7 +31,7 @@ exports.loginPost = (req, res, next) => {
       if (err) {
         return res.status(500).send('Login failed');
       }
-      return res.redirect(`folders/1`);
+      return res.redirect(`/`);
     });
   })(req, res, next);
 };

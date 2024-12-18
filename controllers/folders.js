@@ -2,32 +2,36 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function viewFolderGet(req, res, next) {
-  const folderId = parseInt(req.params.id);
+  try {
+    const folderId = parseInt(req.params.id);
 
-  const currentFolder = await prisma.folder.findUnique({
-    where: { id: folderId },
-    include: {
-      parent: true,
-      children: true,
-      files: true,
-    },
-  });
+    const currentFolder = await prisma.folder.findUnique({
+      where: { id: folderId },
+      include: {
+        parent: true,
+        children: true,
+        files: true,
+      },
+    });
 
-  if (!currentFolder) {
-    const error = new Error('Folder not found.');
-    error.statusCode = 404;
-    return next(error);
+    if (!currentFolder || currentFolder.userId !== req.user.id) {
+      const error = new Error('Folder not found.');
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.render('index', {
+      title: currentFolder.name,
+      main: 'partials/folder',
+      user: req.user,
+      currentFolder,
+      parent: currentFolder.parent,
+      children: currentFolder.children,
+      files: currentFolder.files,
+    });
+  } catch (err) {
+    next(err);
   }
-
-  res.render('index', {
-    title: currentFolder.name,
-    main: 'partials/folder',
-    user: req.user,
-    currentFolder,
-    parent: currentFolder.parent,
-    children: currentFolder.children,
-    files: currentFolder.files,
-  });
 }
 
 async function createFolderPost(req, res, next) {
@@ -53,7 +57,7 @@ async function updateFolderPost(req, res, next) {
 
   try {
     await prisma.folder.update({
-      where: { id: folderId },
+      where: { id: folderId, userId: req.user.id },
       data: { name: req.body.name },
     });
   } catch (err) {
@@ -67,12 +71,12 @@ async function deleteFolderPost(req, res, next) {
 
   try {
     await prisma.folder.delete({
-      where: { id: folderId },
+      where: { id: folderId, userId: req.user.id },
     });
   } catch (err) {
     next(err);
   }
-  res.redirect('/folders/1');
+  res.redirect('/folders');
 }
 
 module.exports = {
