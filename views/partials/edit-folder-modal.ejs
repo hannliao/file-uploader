@@ -1,0 +1,31 @@
+<div
+  class="edit-folder-modal hidden fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
+>
+  <form
+    action="/folders/<%= currentFolder.id %>/edit"
+    method="POST"
+    class="bg-white p-6 rounded-lg flex flex-col"
+  >
+    <h1 class="text-center font-semibold text-base mb-2">Edit Folder</h1>
+    <label for="name">Name</label>
+    <input
+      class="border-2 border-slate-300 rounded-lg p-2 my-2"
+      id="name"
+      name="name"
+      type="text"
+      value="<%=currentFolder.name%>"
+      required
+    />
+    <button
+      class="bg-slate-300 hover:bg-slate-400 rounded-lg p-2 my-2 text-sm font-semibold"
+    >
+      Update
+    </button>
+    <button
+      type="button"
+      class="cancel bg-stone-200 hover:bg-hover-gray rounded-lg p-2 text-sm font-semibold"
+    >
+      Cancel
+    </button>
+  </form>
+</div>

@@ -1,0 +1,44 @@
+<header class="w-screen bg-slate-300 flex justify-around items-center p-7">
+  <div class="relative">
+    <button class="add-button hover:bg-slate-400 rounded-lg p-2">
+      <img src="/icons/add-outline.svg" alt="add" class="w-8" />
+    </button>
+    <div
+      class="add-div hidden absolute top-full left-0 flex-col bg-white border shadow-md shadow-stone-300 rounded-lg"
+    >
+      <a
+        href="#"
+        class="new-folder w-full flex whitespace-nowrap text-sm font-medium p-3 hover:bg-hover-gray"
+      >
+        New Folder
+      </a>
+      <a
+        href="#"
+        class="upload-file w-full flex whitespace-nowrap text-sm font-medium p-3 hover:bg-hover-gray"
+      >
+        Upload File
+      </a>
+    </div>
+  </div>
+
+  <h1>
+    <a href="/" class="font-custom font-bold text-2xl p-5 mx-5">clouddrive</a>
+  </h1>
+  <a href="/logout"
+    ><img src="/icons/log-out-outline.svg" alt="logout" class="w-8"
+  /></a>
+</header>
+
+<%- include("new-folder-modal") %> <%- include("upload-file-modal") %>
+
+<script src="/js/modal.js"></script>
+<script>
+  toggleVisibility('.add-button', '.add-div');
+  closeDiv('.add-div');
+
+  toggleVisibility('.new-folder', '.new-folder-modal');
+  closeModal('.new-folder-modal');
+
+  toggleVisibility('.upload-file', '.file-modal');
+  closeModal('.file-modal');
+</script>

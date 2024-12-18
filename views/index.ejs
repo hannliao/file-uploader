@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/tailwind.css" />
+  </head>
+  <body class="flex flex-col w-screen items-center">
+    <%- include("partials/header") %>
+    <main class="flex flex-col flex-1 max-w-3xl w-4/5 items-left p-10">
+      <%- include(main) %>
+    </main>
+    <%- include("partials/footer") %>
+  </body>
+</html>

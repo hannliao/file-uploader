@@ -1,0 +1,22 @@
+<div
+  class="file-modal hidden fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
+>
+  <form
+    action="/file"
+    method="POST"
+    class="bg-white p-6 rounded-lg flex flex-col"
+  >
+    <input class="my-4" id="file" name="file" type="file" required />
+    <button
+      class="bg-slate-300 hover:bg-slate-400 rounded-lg p-2 mb-2 text-sm font-semibold"
+    >
+      Upload
+    </button>
+    <button
+      type="button"
+      class="cancel bg-stone-200 hover:bg-hover-gray rounded-lg p-2 text-sm font-semibold"
+    >
+      Cancel
+    </button>
+  </form>
+</div>

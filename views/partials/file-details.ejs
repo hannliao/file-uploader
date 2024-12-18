@@ -1,0 +1,24 @@
+<div>
+  <h1 class="font-semibold text-left text-xl my-5">File Details</h1>
+  <div class="flex flex-col">
+    <ul>
+      <li>Name: <%= file.name %></li>
+      <li>Size: <%= file.size %></li>
+      <li>Path: <%= file.path %></li>
+      <li>Extension: <%= file.extension %></li>
+      <li>Uploaded at: <%= file.createdAt %></li>
+    </ul>
+
+    <button>
+      <img
+        src="/icons/cloud-download-outline.svg"
+        alt="download"
+        class="w-8 p-2"
+      />
+    </button>
+
+    <button>
+      <img src="/icons/trash-outline.svg" alt="delete" class="w-8 p-2" />
+    </button>
+  </div>
+</div>
