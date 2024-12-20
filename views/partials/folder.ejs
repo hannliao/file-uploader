@@ -1,8 +1,8 @@
 <div>
-  <div class="mt-10 mb-5">
+  <div class="mt-10 mb-3">
     <% if (parent) { %>
-    <a href="/folders/<%= parent.id %>" class="text-sky-700 underline text-sm">
-      < <%= parent.name %></a
+    <a href="/folders/<%= parent.id %>" class="text-black underline text-sm">
+      / <%= parent.name %></a
     >
     <% } %>
   </div>
@@ -37,11 +37,11 @@
     <% } %>
   </div>
 
-  <div class="flex">
+  <div class="flex flex-wrap my-5">
     <% if (children && children.length) { children.forEach((folder) => { %>
     <a
-      href="/folders/<%= folder.id %>"
-      class="flex w-40 text-sm font-medium text-left border-2 border-slate-300 rounded-lg p-3 m-3 hover:bg-slate-200"
+      href="<%= folder.id %>"
+      class="flex w-40 text-sm font-medium text-left rounded-lg p-3 m-3 bg-slate-200 hover:bg-slate-300"
     >
       <img src="/icons/folder-outline.svg" alt="folder" class="w-5 mr-2" />
       <h2 class="truncate"><%= folder.name %></h2>
@@ -49,15 +49,24 @@
     <% }) } %>
   </div>
 
-  <% if (files && files.length) { files.forEach((file) => { %>
-  <div><%= file.name %></div>
-  <% }) } %>
+  <div class="flex flex-wrap my-5">
+    <% if (files && files.length) { files.forEach((file) => { %>
+    <a
+      href="/files/<%= file.path %>"
+      class="w-28 h-32 flex flex-col items-center text-center rounded-lg p-2 m-3 bg-slate-200 hover:bg-slate-300"
+    >
+      <img src="/icons/document-outline.svg" alt="document" class="w-8 m-2" />
+      <p class="text-sm line-clamp-3"><%= file.name %></p>
+    </a>
+    <% }) } %>
+  </div>
 </div>
 
 <%- include("edit-folder-modal") %> <%- include("delete-folder-modal") %>
 
-<script src="/js/modal.js"></script>
-<script>
+<script type="module" src="/js/modal.js"></script>
+<script type="module">
+  import { toggleVisibility, closeDiv, closeModal } from '/js/modal.js';
   toggleVisibility('.more-button', '.more-div');
   closeDiv('.more-div');
 

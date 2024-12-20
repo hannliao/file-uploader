@@ -1,4 +1,4 @@
-const toggleVisibility = (triggerSelector, targetSelector) => {
+export const toggleVisibility = (triggerSelector, targetSelector) => {
   const trigger = document.querySelector(triggerSelector);
   const target = document.querySelector(targetSelector);
 
@@ -8,7 +8,7 @@ const toggleVisibility = (triggerSelector, targetSelector) => {
   });
 };
 
-const closeModal = (modalSelector) => {
+export const closeModal = (modalSelector) => {
   document.querySelectorAll('.cancel').forEach((button) => {
     button.addEventListener('click', (e) => {
       const modal = e.target.closest(modalSelector);
@@ -19,17 +19,11 @@ const closeModal = (modalSelector) => {
   });
 };
 
-const closeDiv = (targetSelector) => {
+export const closeDiv = (targetSelector) => {
   const target = document.querySelector(targetSelector);
 
   target.addEventListener('click', (e) => {
     e.preventDefault();
     target.classList.add('hidden');
   });
-};
-
-module.exports = {
-  toggleVisibility,
-  closeModal,
-  closeDiv,
 };

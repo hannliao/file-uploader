@@ -1,24 +1,46 @@
 <div>
-  <h1 class="font-semibold text-left text-xl my-5">File Details</h1>
-  <div class="flex flex-col">
-    <ul>
-      <li>Name: <%= file.name %></li>
-      <li>Size: <%= file.size %></li>
-      <li>Path: <%= file.path %></li>
-      <li>Extension: <%= file.extension %></li>
-      <li>Uploaded at: <%= file.createdAt %></li>
-    </ul>
+  <div class="mt-10 mb-3">
+    <a
+      href="/folders/<%= currentFolder.id %>"
+      class="text-black underline text-sm"
+    >
+      / <%= currentFolder.name %></a
+    >
+  </div>
 
-    <button>
-      <img
-        src="/icons/cloud-download-outline.svg"
-        alt="download"
-        class="w-8 p-2"
-      />
-    </button>
+  <h1 class="font-semibold text-center text-xl my-8">File Details</h1>
+  <div class="flex flex-col justify-center items-center">
+    <form action="/files/download/<%= file.path %>" method="GET">
+      <button
+        class="flex justify-evenly items-center w-40 bg-slate-300 hover:bg-slate-400 rounded-lg p-2 text-sm font-semibold"
+      >
+        <span>Download File</span>
+        <img
+          src="/icons/cloud-download-outline.svg"
+          alt="download"
+          class="w-7"
+        />
+      </button>
+    </form>
 
-    <button>
-      <img src="/icons/trash-outline.svg" alt="delete" class="w-8 p-2" />
+    <div class="grid grid-cols-[auto,1fr] gap-2 my-8">
+      <div class="grid-item text-right">Name:</div>
+      <div class="grid-item"><%= file.name %></div>
+
+      <div class="grid-item text-right">Type:</div>
+      <div class="grid-item"><%= file.mimetype %></div>
+
+      <div class="grid-item text-right">Size:</div>
+      <div class="grid-item"><%= file.formattedSize %></div>
+
+      <div class="grid-item text-right">Uploaded:</div>
+      <div class="grid-item"><%= file.formattedDate %></div>
+    </div>
+
+    <button
+      class="w-40 bg-red-600 hover:bg-red-500 rounded-lg p-2 text-white text-sm font-semibold"
+    >
+      Delete File
     </button>
   </div>
 </div>

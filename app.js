@@ -15,6 +15,7 @@ const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const indexRouter = require('./routes/index');
 const foldersRouter = require('./routes/folders');
+const fileRouter = require('./routes/file');
 
 const app = express();
 const prisma = new PrismaClient();
@@ -23,6 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(
   session({
@@ -83,6 +85,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/', auth, preventCache, indexRouter);
 app.use('/folders', auth, preventCache, foldersRouter);
+app.use('/files', auth, preventCache, fileRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);

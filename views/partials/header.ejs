@@ -31,8 +31,10 @@
 
 <%- include("new-folder-modal") %> <%- include("upload-file-modal") %>
 
-<script src="/js/modal.js"></script>
-<script>
+<script type="module" src="/js/modal.js"></script>
+<script type="module">
+  import { toggleVisibility, closeDiv, closeModal } from '/js/modal.js';
+
   toggleVisibility('.add-button', '.add-div');
   closeDiv('.add-div');
 
