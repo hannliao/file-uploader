@@ -10,7 +10,7 @@
 
   <h1 class="font-semibold text-center text-xl my-8">File Details</h1>
   <div class="flex flex-col justify-center items-center">
-    <form action="/files/download/<%= file.path %>" method="GET">
+    <form action="/files/<%= file.path %>/download" method="GET">
       <button
         class="flex justify-evenly items-center w-40 bg-slate-300 hover:bg-slate-400 rounded-lg p-2 text-sm font-semibold"
       >
@@ -38,9 +38,19 @@
     </div>
 
     <button
-      class="w-40 bg-red-600 hover:bg-red-500 rounded-lg p-2 text-white text-sm font-semibold"
+      class="delete-file w-40 bg-red-600 hover:bg-red-500 rounded-lg p-2 text-white text-sm font-semibold"
     >
       Delete File
     </button>
   </div>
 </div>
+
+<%- include("delete-file-modal") %>
+
+<script type="module" src="/js/modal"></script>
+<script type="module">
+  import { toggleVisibility, closeModal } from '/js/modal.js';
+
+  toggleVisibility('.delete-file', '.delete-file-modal');
+  closeModal('.delete-file-modal');
+</script>

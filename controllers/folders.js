@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 async function viewFolderGet(req, res, next) {
   try {
     const folderId = parseInt(req.params.id);
-
     const currentFolder = await prisma.folder.findUnique({
       where: { id: folderId },
       include: {
@@ -35,9 +34,8 @@ async function viewFolderGet(req, res, next) {
 }
 
 async function createFolderPost(req, res, next) {
-  const folderId = parseInt(req.params.id);
-
   try {
+    const folderId = parseInt(req.params.id);
     await prisma.folder.create({
       data: {
         name: req.body.name,
@@ -53,30 +51,31 @@ async function createFolderPost(req, res, next) {
 }
 
 async function updateFolderPost(req, res, next) {
-  const folderId = parseInt(req.params.id);
-
   try {
+    const folderId = parseInt(req.params.id);
     await prisma.folder.update({
       where: { id: folderId, userId: req.user.id },
       data: { name: req.body.name },
     });
+    res.redirect(`/folders/${folderId}`);
   } catch (err) {
     next(err);
   }
-  res.redirect(`/folders/${folderId}`);
 }
 
 async function deleteFolderPost(req, res, next) {
-  const folderId = parseInt(req.params.id);
-
   try {
+    const folderId = parseInt(req.params.id);
+    const currentFolder = await prisma.folder.findUnique({
+      where: { id: folderId },
+    });
     await prisma.folder.delete({
       where: { id: folderId, userId: req.user.id },
     });
+    res.redirect(`/folders/${currentFolder.parentId}`);
   } catch (err) {
     next(err);
   }
-  res.redirect('/folders');
 }
 
 module.exports = {

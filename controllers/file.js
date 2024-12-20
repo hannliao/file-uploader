@@ -1,29 +1,24 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const path = require('path');
-const { uploadFile, downloadFile } = require('../utils/supabase');
+const supabase = require('../utils/supabase');
 const { v4: uuidv4 } = require('uuid');
 const { formatSize, formatDate } = require('../utils/format');
 
 async function viewFileGet(req, res, next) {
   try {
     const filePath = req.params.filePath;
-
     const file = await prisma.file.findUnique({
       where: { path: filePath },
     });
-
-    file.formattedSize = formatSize(file.size);
-    file.formattedDate = formatDate(file.createdAt);
-
     const currentFolder = await prisma.folder.findUnique({
       where: { id: file.folderId },
     });
+    file.formattedSize = formatSize(file.size);
+    file.formattedDate = formatDate(file.createdAt);
 
     res.render('index', {
       title: file.name,
       main: 'partials/file-details',
-      user: req.user,
       currentFolder,
       file,
     });
@@ -42,28 +37,23 @@ async function uploadFilePost(req, res, next) {
       error.statusCode = 400;
       return next(error);
     }
-
     const folderId = parseInt(req.params.id);
-    const currentFolder = await prisma.folder.findUnique({
-      where: { id: folderId },
-    });
-
     const { originalname, mimetype, size, buffer } = req.file;
     const filePath = uuidv4();
     const mimeType =
       mimetype || req.file.mimetype || 'application/octet-stream';
 
-    await uploadFile(filePath, buffer);
-
+    await supabase.uploadFile(filePath, buffer);
     await prisma.file.create({
       data: {
         name: originalname,
         size: size,
-        folderId: currentFolder.id,
+        folderId: folderId,
         path: filePath,
         mimetype: mimeType,
       },
     });
+
     res.redirect(`/folders/${folderId}`);
   } catch (err) {
     console.error('Error during file upload:', err);
@@ -75,7 +65,7 @@ async function uploadFilePost(req, res, next) {
 async function downloadFileGet(req, res, next) {
   try {
     const filePath = req.params.filePath;
-    const data = await downloadFile(filePath);
+    const data = await supabase.downloadFile(filePath);
     const fileRecord = await prisma.file.findUnique({
       where: { path: filePath },
     });
@@ -97,8 +87,30 @@ async function downloadFileGet(req, res, next) {
   }
 }
 
+async function deleteFilePost(req, res, next) {
+  try {
+    const filePath = req.params.filePath;
+    const file = await prisma.file.findUnique({
+      where: { path: filePath },
+    });
+    const folderId = file.folderId;
+
+    await supabase.deleteFile(filePath);
+    await prisma.file.delete({
+      where: { path: filePath },
+    });
+
+    res.redirect(`/folders/${folderId}`);
+  } catch (err) {
+    console.error('Error during file deletion:', err);
+    const error = new Error('File deletion failed.');
+    return next(error);
+  }
+}
+
 module.exports = {
   viewFileGet,
   uploadFilePost,
   downloadFileGet,
+  deleteFilePost,
 };

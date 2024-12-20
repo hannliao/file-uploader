@@ -2,7 +2,7 @@
   class="file-modal hidden fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
 >
   <form
-    action="/files/upload/<%= currentFolder.id %>"
+    action="/files/<%= currentFolder.id %>/upload"
     method="POST"
     enctype="multipart/form-data"
     class="bg-white p-6 rounded-lg flex flex-col"

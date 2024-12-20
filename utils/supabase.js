@@ -30,7 +30,20 @@ async function downloadFile(filePath) {
   }
 }
 
+async function deleteFile(filePath) {
+  const { data, error } = await supabase.storage
+    .from(process.env.BUCKET_NAME)
+    .remove([filePath]);
+
+  if (error) {
+    console.error('Error deleting file:', error);
+  } else {
+    console.log('File deleted:', data);
+  }
+}
+
 module.exports = {
   uploadFile,
   downloadFile,
+  deleteFile,
 };
